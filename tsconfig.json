@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "jsx": "preserve",
+        "importHelpers": true,
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "baseUrl": ".",
+        "outDir": "./build/",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "target": "es5",
+        "lib": [
+            "esnext",
+            "dom",
+            "dom.iterable",
+            "scripthost"
+        ],
+        "paths": {
+            "*": ["./src/types/*.d.ts"],
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "name": "@casthub/embed",
+    "version": "1.0.0",
+    "description": "Vue 3 Utility Hook for cross-origin iFrame IPC",
+    "files": ["build"],
+    "module": "./build/index.es.js",
+    "types": "./build/src/index.d.ts",
+    "license": "GPL-3.0-only",
+    "author": {
+        "name": "CastHub Limited",
+        "url": "https://casthub.app",
+        "email": "support@casthub.app"
+    },
+    "homepage": "https://github.com/casthub/embed",
+    "bugs": {
+        "url": "https://github.com/casthub/embed/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/casthub/embed.git"
+    },
+    "keywords": [
+        "typescript",
+        "vue",
+        "iframe",
+        "hook"
+    ],
+    "scripts": {
+        "clean": "rimraf build",
+        "prepack": "yarn build",
+        "build": "yarn clean && yarn compile",
+        "compile": "vite build"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^1.2.4",
+        "@vue/compiler-sfc": "^3.1.4",
+        "nanoevents": "^6.0.0",
+        "rimraf": "^3.0.2",
+        "tslib": "^2.3.0",
+        "typescript": "^4.3.5",
+        "vite": "^2.4.1",
+        "vite-plugin-dts": "^0.5.2",
+        "vue": "next"
+    }
+}
