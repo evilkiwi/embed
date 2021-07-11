@@ -9,8 +9,8 @@ export type AsyncHandler<P = any> = (payload: P) => Promise<unknown>;
 
 export interface Context<Events extends DefaultEvents> {
     mode: Mode;
-    post: (type: Type, message: any) => void;
-    send: (type: Type, message: any) => Promise<unknown>;
+    post: (type: Type, message?: any) => void;
+    send: (type: Type, message?: any) => Promise<unknown>;
     handle: <P = any>(type: Type, callback: AsyncHandler<P>) => () => void;
     destroy: () => void;
     iframe?: Frame;
