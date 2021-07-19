@@ -102,7 +102,7 @@ export function useEmbed<E extends DefaultEvents>(mode: Mode, options: Options) 
             id: options.id,
             type,
             payload: message ?? {},
-        }, options.remote ?? '*');
+        }, target?.origin !== 'null' ? (options.remote ?? '*') : '*');
     };
 
     const send = async (type: Type, message?: any) => {
