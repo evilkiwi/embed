@@ -1,4 +1,4 @@
-import type { DefaultEvents, Emitter } from 'nanoevents';
+import type { Emitter, EventsMap } from 'nanoevents';
 import type { Ref } from 'vue';
 
 export type Frame = Ref<InstanceType<typeof HTMLIFrameElement>|undefined>;
@@ -7,7 +7,7 @@ export type Mode = 'host'|'client';
 
 export type AsyncHandler<P = any> = (payload: P) => Promise<unknown>;
 
-export interface Context<Events extends DefaultEvents> {
+export interface Context<Events extends EventsMap> {
     mode: Mode;
     post: (type: Type, message?: any) => void;
     send: (type: Type, message?: any) => Promise<unknown>;
@@ -20,7 +20,7 @@ export interface Context<Events extends DefaultEvents> {
 
 export interface Promises {
     [id: string]: {
-        resolve: (value: unknown) => void;
+        resolve: (value: any) => void;
         reject: (e: Error) => void;
         timeout: number;
     };

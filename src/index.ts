@@ -1,4 +1,4 @@
-import type { DefaultEvents } from 'nanoevents';
+import type { DefaultEvents, EventsMap } from 'nanoevents';
 import { createNanoEvents } from 'nanoevents';
 import type { WatchStopHandle } from 'vue';
 import { watch } from 'vue';
@@ -83,12 +83,12 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
     }
 };
 
-export function useEmbed<E extends DefaultEvents>(mode: Mode, options: Options) {
+export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options) {
     if (register[options.id]) {
-        return register[options.id];
+        return register[options.id] as Context<Events>;
     }
 
-    const events = createNanoEvents<E>();
+    const events = createNanoEvents<Events>();
     const isHost = mode === 'host';
     let target: Window|null = window.parent;
     let watcher: WatchStopHandle|undefined;
@@ -98,14 +98,26 @@ export function useEmbed<E extends DefaultEvents>(mode: Mode, options: Options) 
             throw new Error('Target Window is unloaded');
         }
 
-        target?.postMessage({
+        let remote = '*';
+
+        try {
+            const origin = target.origin;
+
+            if (origin && options.remote) {
+                remote = options.remote;
+            }
+        } catch (e) {
+            // Do nothing.
+        }
+
+        target.postMessage({
             id: options.id,
             type,
             payload: message ?? {},
-        }, target?.origin !== 'null' ? (options.remote ?? '*') : '*');
+        }, remote);
     };
 
-    const send = async (type: Type, message?: any) => {
+    const send = async <R = any>(type: Type, message?: any): Promise<R> => {
         return new Promise((resolve, reject) => {
             const id = generateId();
 
@@ -147,7 +159,7 @@ export function useEmbed<E extends DefaultEvents>(mode: Mode, options: Options) 
             watcher();
         }
 
-        register[options.id].events.events = {};
+        events.events = {};
         delete register[options.id];
 
         if (!Object.keys(register).length) {
@@ -155,7 +167,7 @@ export function useEmbed<E extends DefaultEvents>(mode: Mode, options: Options) 
         }
     };
 
-    const context: Context<E> = {
+    const context: Context<Events> = {
         mode,
         post,
         send,
@@ -172,7 +184,7 @@ export function useEmbed<E extends DefaultEvents>(mode: Mode, options: Options) 
         window.addEventListener('message', processMessage);
     }
 
-    return context;
+    return context as Context<Events>;
 }
 
 export * from './types';
