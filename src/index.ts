@@ -11,6 +11,9 @@ const promises: Promises = {};
 const generateId = () => Math.floor(Math.random() * 1000000) + 1;
 
 const errPrefix = '_chEmbedError:';
+const encodeErr = (e: Error) => `${errPrefix}${e.message}`;
+const decodeErr = (str: string) => new Error(str.replace(errPrefix, ''));
+const isErr = (str: string) => typeof str === 'string' && str.indexOf(errPrefix) === 0;
 
 const processMessage = async (e: MessageEvent<PostObject>) => {
     if (
@@ -53,7 +56,7 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
 
             response = await handlers[id][payload.type](payload.message);
         } catch (e) {
-            response = `${errPrefix}${e.message}`;
+            response = encodeErr(e);
         }
 
         post('_asyncResponse', {
@@ -70,8 +73,8 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
 
         window.clearTimeout(promise.timeout);
 
-        if (typeof payload.response === 'string' && payload.response.indexOf(errPrefix) === 0) {
-            promise.reject(new Error(payload.response.replace(errPrefix, '')));
+        if (isErr(payload.response)) {
+            promise.reject(decodeErr(payload.response));
         } else {
             promise.resolve(payload.response);
         }
@@ -79,7 +82,13 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
         delete promises[id][payload.id];
     } else {
         // Otherwise it's a regular event, so emit it to any listeners.
-        events.emit(type, payload);
+        let message = payload;
+
+        if (isErr(message)) {
+            message = decodeErr(message);
+        }
+
+        events.emit(type, message);
     }
 };
 
@@ -108,6 +117,10 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
             }
         } catch (e) {
             // Do nothing.
+        }
+
+        if (message instanceof Error) {
+            message = encodeErr(message);
         }
 
         target.postMessage({
