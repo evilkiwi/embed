@@ -1,11 +1,15 @@
 <template>
     <h1>Child Content</h1>
     <p>Async result: {{ result }}</p>
+    <p>Error result: {{ err }}</p>
     <button @click.prevent="async">
         Click for Async
     </button>
     <button @click.prevent="sync">
         Click for Sync
+    </button>
+    <button @click.prevent="error">
+        Click for Error
     </button>
 </template>
 
@@ -22,6 +26,7 @@
     });
 
     const result = ref('');
+    const err = ref('');
 
     const async = async () => {
         try {
@@ -32,6 +37,14 @@
             result.value = fetch;
         } catch (e) {
             throw new Error(`Async fetch failed! ${e}`);
+        }
+    };
+
+    const error = async () => {
+        try {
+            await send('err');
+        } catch (e) {
+            err.value = `${e}`;
         }
     };
 

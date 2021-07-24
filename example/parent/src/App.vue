@@ -59,6 +59,14 @@
         lastDummy2.value = `${num}`;
     });
 
+    handle1('err', async () => {
+        throw new Error('Some random error');
+    });
+
+    handle2('err', async () => {
+        throw new Error('Some random error');
+    });
+
     handle1<{ dummy: string }>('async', async (payload) => {
         lastDummy1.value = payload.dummy;
         countdown1.value = 5;
@@ -93,14 +101,24 @@
 </script>
 
 <style>
+    html,
+    body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
     #app {
         display: flex;
         flex-direction: row;
+        height: calc(100% - 40px);
+        padding: 20px;
     }
 
     .col {
         display: flex;
         flex-direction: column;
+        height: 100%;
         flex-grow: 1;
         flex-shrink: 1;
         flex-basis: 0;
@@ -109,5 +127,10 @@
 
     .col:first-child {
         margin-left: 0;
+    }
+
+    iframe {
+        flex-grow: 1;
+        flex-shrink: 1;
     }
 </style>

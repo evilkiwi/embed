@@ -2,13 +2,15 @@ import type { DefaultEvents, EventsMap } from 'nanoevents';
 import { createNanoEvents } from 'nanoevents';
 import type { WatchStopHandle } from 'vue';
 import { watch } from 'vue';
-import type { AsyncHandler, Frame, Options, PostObject, Mode, Promises, Context, Type } from './types';
+import type { AsyncHandler, Options, PostObject, Mode, Promises, Context, Type } from './types';
 
 const register: Record<string, Context<DefaultEvents>> = {};
 const handlers: Record<string, Record<string, AsyncHandler>> = {};
 const promises: Promises = {};
 
 const generateId = () => Math.floor(Math.random() * 1000000) + 1;
+
+const errPrefix = '_chEmbedError:';
 
 const processMessage = async (e: MessageEvent<PostObject>) => {
     if (
@@ -51,7 +53,7 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
 
             response = await handlers[id][payload.type](payload.message);
         } catch (e) {
-            response = e;
+            response = `${errPrefix}${e.message}`;
         }
 
         post('_asyncResponse', {
@@ -68,8 +70,8 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
 
         window.clearTimeout(promise.timeout);
 
-        if (payload.response instanceof Error) {
-            promise.reject(payload.response);
+        if (typeof payload.response === 'string' && payload.response.indexOf(errPrefix) === 0) {
+            promise.reject(new Error(payload.response.replace(errPrefix, '')));
         } else {
             promise.resolve(payload.response);
         }
