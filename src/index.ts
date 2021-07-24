@@ -5,7 +5,7 @@ import { watch } from 'vue';
 import type { AsyncHandler, Frame, Options, PostObject, Mode, Promises, Context, Type } from './types';
 
 const register: Record<string, Context<DefaultEvents>> = {};
-const handlers: Record<string, AsyncHandler> = {};
+const handlers: Record<string, Record<string, AsyncHandler>> = {};
 const promises: Promises = {};
 
 const generateId = () => Math.floor(Math.random() * 1000000) + 1;
@@ -45,11 +45,11 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
         let response: Error|unknown;
 
         try {
-            if (!handlers[payload.type]) {
+            if (!handlers[id] || !handlers[id][payload.type]) {
                 throw new Error(`No Handler for Event "${payload.type}"`);
             }
 
-            response = await handlers[payload.type](payload.message);
+            response = await handlers[id][payload.type](payload.message);
         } catch (e) {
             response = e;
         }
@@ -58,25 +58,23 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
             id: payload.id,
             response,
         });
-    } else if (type === '_asyncResponse') {
+    } else if (type === '_asyncResponse' && promises[id] && promises[id][payload.id]) {
         /**
          * Process the response from async executions.
          * This just means taking the response and resolving/rejecting
          * the stored promise.
          */
-        const promise = promises[payload.id];
+        const promise = promises[id][payload.id];
 
-        if (promise) {
-            window.clearTimeout(promise.timeout);
+        window.clearTimeout(promise.timeout);
 
-            if (payload.response instanceof Error) {
-                promise.reject(payload.response);
-            } else {
-                promise.resolve(payload.response);
-            }
-
-            delete promises[payload.id];
+        if (payload.response instanceof Error) {
+            promise.reject(payload.response);
+        } else {
+            promise.resolve(payload.response);
         }
+
+        delete promises[id][payload.id];
     } else {
         // Otherwise it's a regular event, so emit it to any listeners.
         events.emit(type, payload);
@@ -121,12 +119,16 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
         return new Promise((resolve, reject) => {
             const id = generateId();
 
-            promises[id] = {
+            if (!promises[options.id]) {
+                promises[options.id] = {};
+            }
+
+            promises[options.id][id] = {
                 resolve,
                 reject,
                 timeout: window.setTimeout(() => {
                     reject(new Error('Timed out'));
-                    delete promises[id];
+                    delete promises[options.id][id];
                 }, options.timeout ?? 15000),
             };
 
@@ -139,15 +141,23 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
     };
 
     const handle = <P = any>(type: Type, callback: AsyncHandler<P>) => {
-        handlers[type] = callback;
+        if (!handlers[options.id]) {
+            handlers[options.id] = {};
+        }
+
+        handlers[options.id][type] = callback;
 
         return () => {
-            delete handlers[type];
+            delete handlers[options.id][type];
         };
     };
 
     if (isHost) {
-        watcher = watch(options.iframe as Frame, frame => {
+        if (!options.iframe) {
+            throw new Error('"host" mode requires an iFrame reference');
+        }
+
+        watcher = watch(options.iframe, frame => {
             if (frame?.contentWindow) {
                 target = frame.contentWindow;
             }
@@ -161,6 +171,8 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
 
         events.events = {};
         delete register[options.id];
+        delete promises[options.id];
+        delete handlers[options.id];
 
         if (!Object.keys(register).length) {
             window.removeEventListener('message', processMessage);

@@ -28,6 +28,9 @@ export default defineConfig({
             },
             safari10: false,
         },
+        rollupOptions: {
+            external: ['vue'],
+        },
         emptyOutDir: true,
     },
 });

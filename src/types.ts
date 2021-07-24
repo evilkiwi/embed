@@ -19,10 +19,12 @@ export interface Context<Events extends EventsMap> {
 }
 
 export interface Promises {
-    [id: string]: {
-        resolve: (value: any) => void;
-        reject: (e: Error) => void;
-        timeout: number;
+    [instance: string]: {
+        [id: string]: {
+            resolve: (value: any) => void;
+            reject: (e: Error) => void;
+            timeout: number;
+        };
     };
 }
 

@@ -14,8 +14,10 @@
     import { ref } from 'vue';
     import { rand } from './helpers';
 
+    const id = window.location.hash.substr(1);
+
     const { send, post } = useEmbed('client', {
-        id: 'shared-id',
+        id: `shared-id-${id}`,
         remote: 'http://localhost:8000',
     });
 
@@ -23,7 +25,7 @@
 
     const async = async () => {
         try {
-            const fetch = await send('async', {
+            const fetch = await send<string>('async', {
                 dummy: 'lol 123',
             });
 
