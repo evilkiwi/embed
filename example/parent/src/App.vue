@@ -41,6 +41,7 @@
         id: 'shared-id-1',
         iframe: iframe1,
         remote: 'http://localhost:8001',
+        debug: true,
     });
 
     const { handle: handle2, events: events2 } = useEmbed<{
@@ -49,6 +50,7 @@
         id: 'shared-id-2',
         iframe: iframe2,
         remote: 'http://localhost:8001',
+        debug: true,
     });
 
     events1.on('dummy', (num) => {

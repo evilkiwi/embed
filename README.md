@@ -115,10 +115,11 @@ Since communication is bi-directional, you can use **any of the methods on eithe
 
 **Option**|**Default**|**Type**|**Description**
 -----|-----|-----|-----
-id|**[Required]**|`String`|The Host and Client that you want to talk to each other should share the \_same\_ ID.
-timeout|`15000`|`Number`|Configures the global timeout for all asynchronous operations against this ID pair.
-iframe|**[Required for Host]**|`Ref<InstanceType<typeof HTMLIFrame>>`|A Vue 3 `ref` for a Template reference.
-remote|`*`|`String`|A remote URL to limit who can recieve/process Events over this Host/Client pair.
+`id`|**[Required]**|`string`|The Host and Client that you want to talk to each other should share the \_same\_ ID.
+`timeout`|`15000`|`number`|Configures the global timeout for all asynchronous operations against this ID pair.
+`iframe`|**[Required for Host]**|`Ref<InstanceType<typeof HTMLIFrame>>`|A Vue 3 `ref` for a Template reference.
+`remote`|`*`|`string`|A remote URL to limit who can recieve/process Events over this Host/Client pair.
+`debug`|`false`|`boolean`|Whether to print Debug messages to the console, providing an overview of the IPC process.
 
 ### Security Note
 

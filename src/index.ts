@@ -2,18 +2,13 @@ import type { DefaultEvents, EventsMap } from 'nanoevents';
 import { createNanoEvents } from 'nanoevents';
 import type { WatchStopHandle } from 'vue';
 import { watch } from 'vue';
+import { capitalize, generateId, timestamp } from './helpers';
+import { encodeErr, decodeErr, isErr } from './errors';
 import type { AsyncHandler, Options, PostObject, Mode, Promises, Context, Type } from './types';
 
 const register: Record<string, Context<DefaultEvents>> = {};
 const handlers: Record<string, Record<string, AsyncHandler>> = {};
 const promises: Promises = {};
-
-const generateId = () => Math.floor(Math.random() * 1000000) + 1;
-
-const errPrefix = '_chEmbedError:';
-const encodeErr = (e: Error) => `${errPrefix}${e.message}`;
-const decodeErr = (str: string) => new Error(str.replace(errPrefix, ''));
-const isErr = (str: string) => typeof str === 'string' && str.indexOf(errPrefix) === 0;
 
 const processMessage = async (e: MessageEvent<PostObject>) => {
     if (
@@ -43,7 +38,7 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
     }
 
     const { id, type, payload } = e.data;
-    const { events, post } = register[id];
+    const { events, post, logDebug } = register[id];
 
     if (type === '_async') {
         // Process incoming async executions.
@@ -54,8 +49,11 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
                 throw new Error(`No Handler for Event "${payload.type}"`);
             }
 
+            logDebug('debug', 'Processing async request', payload);
+
             response = await handlers[id][payload.type](payload.message);
         } catch (e) {
+            logDebug('error', 'Sending error response', payload, e);
             response = encodeErr(e);
         }
 
@@ -73,6 +71,8 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
 
         window.clearTimeout(promise.timeout);
 
+        logDebug('debug', `#${payload.id} Processing incoming async response`, payload);
+
         if (isErr(payload.response)) {
             promise.reject(decodeErr(payload.response));
         } else {
@@ -88,6 +88,8 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
             message = decodeErr(message);
         }
 
+        logDebug('debug', 'Emitting sync event', type, message);
+
         events.emit(type, message);
     }
 };
@@ -101,6 +103,14 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
     const isHost = mode === 'host';
     let target: Window|null = window.parent;
     let watcher: WatchStopHandle|undefined;
+
+    const logDebug = (type: 'debug'|'error', ...args: any[]) => {
+        if (options.debug !== true) {
+            return;
+        }
+
+        console[type](`[@casthub/embed/${options.id}]`, ...args, `@ ${timestamp()}`);
+    };
 
     const post = (type: Type, message?: any) => {
         if (!target) {
@@ -123,6 +133,8 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
             message = encodeErr(message);
         }
 
+        logDebug('debug', 'Sending synchronous event', type, message);
+
         target.postMessage({
             id: options.id,
             type,
@@ -139,13 +151,22 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
             }
 
             promises[options.id][id] = {
-                resolve,
-                reject,
+                resolve: (response: any) => {
+                    logDebug('debug', `#${id} Received response`, response);
+                    resolve(response);
+                },
+                reject: (err: Error) => {
+                    logDebug('error', `#${id} Received error`, err);
+                    reject(err);
+                },
                 timeout: window.setTimeout(() => {
+                    logDebug('error', `#${id} Request timed out`);
                     reject(new Error('Timed out'));
                     delete promises[options.id][id];
                 }, options.timeout ?? 15000),
             };
+
+            logDebug('debug', `#${id} Requesting async payload`, type, message);
 
             post('_async', {
                 id,
@@ -163,6 +184,7 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
         handlers[options.id][type] = callback;
 
         return () => {
+            logDebug('debug', `Deregistering Handler for event "${type}"`);
             delete handlers[options.id][type];
         };
     };
@@ -174,12 +196,15 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
 
         watcher = watch(options.iframe, frame => {
             if (frame?.contentWindow) {
+                logDebug('debug', 'Host found iFrame Element - using it');
                 target = frame.contentWindow;
             }
         }, { immediate: true });
     }
 
     const destroy = () => {
+        logDebug('debug', `Destroying ${capitalize(mode)}`);
+
         if (watcher) {
             watcher();
         }
@@ -203,6 +228,7 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
         events,
         iframe: options.iframe,
         remote: options.remote,
+        logDebug,
     };
 
     register[options.id] = context;
@@ -210,6 +236,8 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
     if (Object.keys(register).length === 1) {
         window.addEventListener('message', processMessage);
     }
+
+    logDebug('debug', `${capitalize(mode)} mode IPC registed`);
 
     return context as Context<Events>;
 }

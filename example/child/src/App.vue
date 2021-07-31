@@ -23,6 +23,7 @@
     const { send, post } = useEmbed('client', {
         id: `shared-id-${id}`,
         remote: 'http://localhost:8000',
+        debug: true,
     });
 
     const result = ref('');

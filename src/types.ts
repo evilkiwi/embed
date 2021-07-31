@@ -16,6 +16,7 @@ export interface Context<Events extends EventsMap> {
     iframe?: Frame;
     events: Emitter<Events>;
     remote?: string;
+    logDebug: (type: 'debug'|'error', ...args: any[]) => void;
 }
 
 export interface Promises {
@@ -39,4 +40,5 @@ export interface Options {
     timeout?: number;
     iframe?: Frame;
     remote?: string;
+    debug?: boolean;
 }
