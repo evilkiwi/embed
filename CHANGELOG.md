@@ -1,3 +1,7 @@
+# 1.0.10 (2021-08-30)
+
+- Ensure Object payload can be serialized to JSON before sending
+
 # 1.0.8 (2021-07-31)
 
 - Added debug option

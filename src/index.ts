@@ -109,7 +109,7 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
             return;
         }
 
-        console[type](`[@casthub/embed/${options.id}]`, ...args, `@ ${timestamp()}`);
+        console[type](`[@casthub/embed/${options.id}/${mode}]`, ...args, `@ ${timestamp()}`);
     };
 
     const post = (type: Type, message?: any) => {
@@ -133,7 +133,14 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
             message = encodeErr(message);
         }
 
-        logDebug('debug', 'Sending synchronous event', type, message);
+        try {
+            // Ensure the message is serializable to JSON.
+            message = JSON.parse(JSON.stringify(message ?? {}));
+        } catch {
+            throw new Error('Message cannot be serialized to JSON');
+        }
+
+        logDebug('debug', `Sending synchronous event to ${remote}`, type, message);
 
         target.postMessage({
             id: options.id,
@@ -237,7 +244,7 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
         window.addEventListener('message', processMessage);
     }
 
-    logDebug('debug', `${capitalize(mode)} mode IPC registed`);
+    logDebug('debug', `${capitalize(mode)} mode IPC registered`, { options });
 
     return context as Context<Events>;
 }
