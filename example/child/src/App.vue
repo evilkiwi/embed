@@ -11,6 +11,7 @@
     <button @click.prevent="error">
         Click for Error
     </button>
+    <p v-if="randomTip.length > 0">{{ randomTip }}</p>
 </template>
 
 <script lang="ts" setup>
@@ -20,14 +21,19 @@
 
     const id = window.location.hash.substr(1);
 
-    const { send, post } = useEmbed('client', {
+    const { send, post, handle } = useEmbed('client', {
         id: `shared-id-${id}`,
         remote: 'http://localhost:8000',
         debug: true,
     });
 
+    const randomTip = ref('');
     const result = ref('');
     const err = ref('');
+
+    handle<{ tip: string }>('random-tip', async ({ tip }) => {
+        randomTip.value = tip;
+    });
 
     const async = async () => {
         try {

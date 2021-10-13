@@ -2,6 +2,9 @@
     <div class="col">
         <h1>Parent Content 1</h1>
         <p>Last dummy text: {{ lastDummy1 }}</p>
+        <div class="button">
+            <button :disabled="loadingRandom1" @click.prevent="random1">Trigger Random Tip</button>
+        </div>
         <iframe
             src="http://localhost:8001#1"
             ref="iframe1"
@@ -12,6 +15,9 @@
     <div class="col">
         <h1>Parent Content 2</h1>
         <p>Last dummy text: {{ lastDummy2 }}</p>
+        <div class="button">
+            <button :disabled="loadingRandom2" @click.prevent="random2">Trigger Random Tip 2</button>
+        </div>
         <iframe
             src="http://localhost:8001#2"
             ref="iframe2"
@@ -30,28 +36,51 @@
 
     const iframe1 = ref<InstanceType<typeof HTMLIFrameElement>>();
     const iframe2 = ref<InstanceType<typeof HTMLIFrameElement>>();
+    const loadingRandom1 = ref(false);
+    const loadingRandom2 = ref(false);
     const countdown1 = ref(0);
     const countdown2 = ref(0);
     const lastDummy1 = ref('');
     const lastDummy2 = ref('');
 
-    const { handle: handle1, events: events1 } = useEmbed<{
+    const { handle: handle1, events: events1, send: send1 } = useEmbed<{
         dummy: (num: number) => void;
     }>('host', {
         id: 'shared-id-1',
         iframe: iframe1,
         remote: 'http://localhost:8001',
+        timeout: 15000,
         debug: true,
     });
 
-    const { handle: handle2, events: events2 } = useEmbed<{
+    const { handle: handle2, events: events2, send: send2 } = useEmbed<{
         dummy: (num: number) => void;
     }>('host', {
         id: 'shared-id-2',
         iframe: iframe2,
         remote: 'http://localhost:8001',
+        timeout: 15000,
         debug: true,
     });
+
+    const random1 = async () => {
+        loadingRandom1.value = true;
+
+        await send1('random-tip', {
+            tip: 'Penguins are cool 1',
+        });
+
+        loadingRandom1.value = false;
+    };
+    const random2 = async () => {
+        loadingRandom2.value = true;
+
+        await send2('random-tip', {
+            tip: 'Penguins are cool 2',
+        });
+
+        loadingRandom2.value = false;
+    };
 
     events1.on('dummy', (num) => {
         lastDummy1.value = `${num}`;
@@ -129,6 +158,10 @@
 
     .col:first-child {
         margin-left: 0;
+    }
+
+    .button {
+        margin-bottom: 20px;
     }
 
     iframe {
