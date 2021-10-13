@@ -1,3 +1,7 @@
+# 1.0.12 (2021-10-13)
+
+- Optionally allow runtime debugging
+
 # 1.0.11 (2021-10-13)
 
 - Updated dependencies

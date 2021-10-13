@@ -54,7 +54,7 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
             response = await handlers[id][payload.type](payload.message);
         } catch (e) {
             logDebug('error', 'Sending error response', payload, e);
-            response = encodeErr(e);
+            response = encodeErr(e as Error);
         }
 
         post('_asyncResponse', {
@@ -105,7 +105,7 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
     let watcher: WatchStopHandle|undefined;
 
     const logDebug = (type: 'debug'|'error', ...args: any[]) => {
-        if (options.debug !== true) {
+        if (options.debug !== true || options.runtimeDebug !== true || localStorage.getItem('embed-debug') !== 'true') {
             return;
         }
 
