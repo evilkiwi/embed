@@ -41,5 +41,4 @@ export interface Options {
     iframe?: Frame;
     remote?: string;
     debug?: boolean;
-    runtimeDebug?: boolean;
 }

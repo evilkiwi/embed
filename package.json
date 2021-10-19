@@ -1,6 +1,6 @@
 {
     "name": "@casthub/embed",
-    "version": "1.0.12",
+    "version": "1.0.14",
     "description": "Vue 3 Utility Hook for cross-origin iFrame IPC",
     "files": ["build"],
     "module": "./build/index.es.js",

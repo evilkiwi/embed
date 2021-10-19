@@ -1,3 +1,11 @@
+# 1.0.14 (2021-10-19)
+
+- Remove runtime debugging
+
+# 1.0.13 (2021-10-19)
+
+- Ensure correct statement chaining to prevent localStorage access if runtime debugging is disabled
+
 # 1.0.12 (2021-10-13)
 
 - Optionally allow runtime debugging

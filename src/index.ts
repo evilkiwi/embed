@@ -105,7 +105,7 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
     let watcher: WatchStopHandle|undefined;
 
     const logDebug = (type: 'debug'|'error', ...args: any[]) => {
-        if (options.debug !== true || options.runtimeDebug !== true || localStorage.getItem('embed-debug') !== 'true') {
+        if (options.debug !== true) {
             return;
         }
 
