@@ -1,3 +1,11 @@
+# 1.0.19 (2021-10-19)
+
+- Wait for iFrame load event before registering window
+
+# 1.0.17 (2021-10-19)
+
+- Disallow Host-mode IPC from defaulting to `window` when an iFrame reference isn't available
+
 # 1.0.14 (2021-10-19)
 
 - Remove runtime debugging

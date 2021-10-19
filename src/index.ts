@@ -201,10 +201,16 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
             throw new Error('"host" mode requires an iFrame reference');
         }
 
+        logDebug('debug', 'Created in "host" mode - watching for iFrame reference');
+
         watcher = watch(options.iframe, frame => {
-            if (frame?.contentWindow) {
-                logDebug('debug', 'Host found iFrame Element - using it');
-                target = frame.contentWindow;
+            if (frame) {
+                logDebug('debug', 'Host found iFrame Element - waiting for load event');
+
+                frame.addEventListener('load', () => {
+                    logDebug('debug', 'Host iFrame element loaded');
+                    target = frame.contentWindow;
+                }, true);
             }
         }, { immediate: true });
     }
