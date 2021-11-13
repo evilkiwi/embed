@@ -1,12 +1,11 @@
-import type { DefaultEvents, EventsMap } from 'nanoevents';
+import type { DefaultEvents } from 'nanoevents';
 import { createNanoEvents } from 'nanoevents';
 import type { WatchStopHandle } from 'vue';
-import { watch } from 'vue';
 import { capitalize, generateId, timestamp } from './helpers';
 import { encodeErr, decodeErr, isErr } from './errors';
-import type { AsyncHandler, Options, PostObject, Mode, Promises, Context, Type } from './types';
+import type { AsyncHandler, DefaultEventsMap, Options, PostObject, Mode, Promises, Context, Type } from './types';
 
-const register: Record<string, Context<DefaultEvents>> = {};
+const register: Record<string, Context<DefaultEvents & DefaultEventsMap>> = {};
 const handlers: Record<string, Record<string, AsyncHandler>> = {};
 const promises: Promises = {};
 
@@ -94,7 +93,7 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
     }
 };
 
-export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options) {
+export function useEmbed<Events extends DefaultEventsMap>(mode: Mode, options: Options) {
     if (register[options.id]) {
         return register[options.id] as Context<Events>;
     }
@@ -196,23 +195,8 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
         };
     };
 
-    if (isHost) {
-        if (!options.iframe) {
-            throw new Error('"host" mode requires an iFrame reference');
-        }
-
-        logDebug('debug', 'Created in "host" mode - watching for iFrame reference');
-
-        watcher = watch(options.iframe, frame => {
-            if (frame) {
-                logDebug('debug', 'Host found iFrame Element - waiting for load event');
-
-                frame.addEventListener('load', () => {
-                    logDebug('debug', 'Host iFrame element loaded');
-                    target = frame.contentWindow;
-                }, true);
-            }
-        }, { immediate: true });
+    if (isHost && !options.iframe) {
+        throw new Error('"host" mode requires an iFrame reference');
     }
 
     const destroy = () => {
@@ -248,6 +232,21 @@ export function useEmbed<Events extends EventsMap>(mode: Mode, options: Options)
 
     if (Object.keys(register).length === 1) {
         window.addEventListener('message', processMessage);
+    }
+
+    if (isHost) {
+        events.on('_ch-loaded', () => {
+            const targetWindow = context.iframe?.value?.contentWindow ?? null;
+
+            if (targetWindow) {
+                logDebug('debug', 'Client sent ready event');
+                target = targetWindow;
+            } else {
+                logDebug('error', 'Client sent ready event, but no contentWindow was found');
+            }
+        });
+    } else {
+        post('_ch-loaded');
     }
 
     logDebug('debug', `${capitalize(mode)} mode IPC registered`, { options });

@@ -7,7 +7,11 @@ export type Mode = 'host'|'client';
 
 export type AsyncHandler<P = any> = (payload: P) => Promise<unknown>;
 
-export interface Context<Events extends EventsMap> {
+export type DefaultEventsMap = EventsMap & {
+    '_ch-loaded': () => void;
+};
+
+export interface Context<Events extends DefaultEventsMap> {
     mode: Mode;
     post: (type: Type, message?: any) => void;
     send: <R = unknown>(type: Type, message?: any) => Promise<R>;

@@ -8,7 +8,7 @@
         <iframe
             src="http://localhost:8001#1"
             ref="iframe1"
-            sandbox="allow-scripts"
+            sandbox="allow-scripts allow-same-origin"
         />
         <p v-if="countdown1 > 0">Waiting to response... {{ countdown1 }}s</p>
     </div>
@@ -21,7 +21,7 @@
         <iframe
             src="http://localhost:8001#2"
             ref="iframe2"
-            sandbox="allow-scripts"
+            sandbox="allow-scripts allow-same-origin"
         />
         <p v-if="countdown2 > 0">Waiting to response... {{ countdown2 }}s</p>
     </div>

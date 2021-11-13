@@ -1,3 +1,7 @@
+# 1.0.20 (2021-11-13)
+
+- Send a manual event on initialization to get around iFrames that are ready before we register the `load` listener
+
 # 1.0.19 (2021-10-19)
 
 - Wait for iFrame load event before registering window
