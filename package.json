@@ -1,5 +1,5 @@
 {
-    "name": "@casthub/embed",
+    "name": "@tnotifier/embed",
     "version": "1.0.24",
     "description": "Vue 3 Utility Hook for cross-origin iFrame IPC",
     "files": ["build"],
@@ -8,16 +8,16 @@
     "license": "GPL-3.0-only",
     "author": {
         "name": "CastHub Limited",
-        "url": "https://casthub.app",
-        "email": "support@casthub.app"
+        "url": "https://tnotifier.app",
+        "email": "support@tnotifier.app"
     },
-    "homepage": "https://github.com/casthub/embed",
+    "homepage": "https://github.com/tnotifier/embed",
     "bugs": {
-        "url": "https://github.com/casthub/embed/issues"
+        "url": "https://github.com/tnotifier/embed/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/casthub/embed.git"
+        "url": "git+https://github.com/tnotifier/embed.git"
     },
     "keywords": [
         "typescript",

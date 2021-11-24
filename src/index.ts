@@ -108,7 +108,7 @@ export function useEmbed<Events extends DefaultEventsMap>(mode: Mode, options: O
             return;
         }
 
-        console[type](`[@casthub/embed/${options.id}/${mode}]`, ...args, `@ ${timestamp()}`);
+        console[type](`[@tnotifier/embed/${options.id}/${mode}]`, ...args, `@ ${timestamp()}`);
     };
 
     const post = (type: Type, message?: any) => {
