@@ -1,4 +1,5 @@
 import type { Emitter, EventsMap } from 'nanoevents';
+import type { Logger } from '@tnotifier/logger';
 import type { Ref } from 'vue';
 
 export type Frame = Ref<InstanceType<typeof HTMLIFrameElement>|undefined>;
@@ -12,6 +13,7 @@ export type DefaultEventsMap = EventsMap & {
 };
 
 export interface Context<Events extends DefaultEventsMap> {
+    logger: Logger;
     mode: Mode;
     post: (type: Type, message?: any) => void;
     send: <R = unknown>(type: Type, message?: any) => Promise<R>;
@@ -20,7 +22,6 @@ export interface Context<Events extends DefaultEventsMap> {
     iframe?: Frame;
     events: Emitter<Events>;
     remote?: string;
-    logDebug: (type: 'debug'|'error', ...args: any[]) => void;
 }
 
 export interface Promises {
