@@ -1,7 +1,7 @@
-# Contributing to TNotifier Open Source
+# Contributing to Evil Kiwi Open Source
 
-At TNotifier we aim to give back to the Developer communities we engage in as often as possible - as such,
-we maintain various Open Source libraries and software, both related to the TNotifier Ecosystem and otherwise.
+At Evil Kiwi we aim to give back to the Developer communities we engage in as often as possible - as such,
+we maintain various Open Source libraries and software, both related to the Evil Kiwi Ecosystem and otherwise.
 
 We're always welcome to feedback, PRs and constructive criticism of our software.
 
@@ -21,7 +21,7 @@ our `#open-source` channel.
 
 ## I've found an issue with the library/software
 
-In this case, feel free to open a [Bug Report](https://github.com/tnotifier/embed/issues/new?assignees=&labels=&template=bug_report.md&title=)
+In this case, feel free to open a [Bug Report](https://github.com/evilkiwi/embed/issues/new?assignees=&labels=&template=bug_report.md&title=)
 and fully explain the Issue to us. If you don't explain in enough detail, it makes it much harder to diagnose.
 
 Ideally we'd love a minimal set-up that reproduces the issue.
@@ -37,7 +37,7 @@ Great! We'd love to see it!
 
 ## Final notes
 
-From the TNotifier Team, thank you for considering contributing to our Open Source software - we do our best
+From the Evil Kiwi Team, thank you for considering contributing to our Open Source software - we do our best
 to work on and maintain anything we feel would benefit the software, as well as requests from the community,
-but our priority is always based on the TNotifier Ecosystem itself. Contributions are a great way to give back!
+but our priority is always based on the Evil Kiwi Ecosystem itself. Contributions are a great way to give back!
 

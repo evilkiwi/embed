@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.16.8.tgz#61c243a3875f7d0b0962b0543a33ece6ff2f1f17"
   integrity sha512-i7jDUfrVBWc+7OKcBzEe5n7fbv3i2fWtxKzzCvOjnzSxMfWMigAhtfJ7qzZNGFNMsCCd67+uz553dYKWXPvCKw==
 
+"@evilkiwi/logger@^1.0.4":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@evilkiwi/logger/-/logger-1.0.5.tgz#41cc460a0da84d7a40fd4f7c54a0868754a10ff8"
+  integrity sha512-lCdKCM6ZbaZuVxqbMVf8okk0a+sh0oQULbhIRAKCSdFJWOP6Tx5e1yHqrY0OFPqCXZwtV48KT+vXRZGe71Bz5Q==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -27,11 +32,6 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
-
-"@tnotifier/logger@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@tnotifier/logger/-/logger-1.0.4.tgz#aa4e392919b1148d1979c2f23644573d331ea8ce"
-  integrity sha512-O9jr/E5/sK4QZZhqK5UXcBRb+wEHdEzRpk/TqV4GExdahOKUnFsxHe9wRkZefE3vI5tnbY201/XZChRyF2/JVQ==
 
 "@ts-morph/common@~0.12.2":
   version "0.12.2"

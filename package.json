@@ -1,5 +1,5 @@
 {
-    "name": "@tnotifier/embed",
+    "name": "@evilkiwi/embed",
     "version": "1.0.25",
     "description": "Vue 3 Utility Hook for cross-origin iFrame IPC",
     "files": ["build"],
@@ -7,17 +7,17 @@
     "types": "./build/src/index.d.ts",
     "license": "GPL-3.0-only",
     "author": {
-        "name": "CastHub Limited",
-        "url": "https://tnotifier.app",
-        "email": "support@tnotifier.app"
+        "name": "Evil Kiwi Limited",
+        "url": "https://evil.kiwi",
+        "email": "support@evil.kiwi"
     },
-    "homepage": "https://github.com/tnotifier/embed",
+    "homepage": "https://github.com/evilkiwi/embed",
     "bugs": {
-        "url": "https://github.com/tnotifier/embed/issues"
+        "url": "https://github.com/evilkiwi/embed/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/tnotifier/embed.git"
+        "url": "git+https://github.com/evilkiwi/embed.git"
     },
     "keywords": [
         "typescript",
@@ -33,7 +33,7 @@
         "dev": "vite build --watch"
     },
     "dependencies": {
-        "@tnotifier/logger": "^1.0.4",
+        "@evilkiwi/logger": "^1.0.4",
         "nanoevents": "^6.0.2"
     },
     "devDependencies": {

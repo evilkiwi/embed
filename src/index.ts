@@ -1,5 +1,5 @@
-import { createLogger } from '@tnotifier/logger';
 import type { DefaultEvents } from 'nanoevents';
+import { createLogger } from '@evilkiwi/logger';
 import { createNanoEvents } from 'nanoevents';
 import type { WatchStopHandle } from 'vue';
 import type { AsyncHandler, DefaultEventsMap, Options, PostObject, Mode, Promises, Context, Type } from '@/types';
