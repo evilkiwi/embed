@@ -1,3 +1,9 @@
+# 1.1.0 (2022-11-15)
+
+- Updated dependencies
+- Move to `@oyed`
+- Move repository to PNPM
+
 # 1.0.25 (2022-01-18)
 
 - Improved logging
