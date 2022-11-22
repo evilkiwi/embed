@@ -1,15 +1,15 @@
 <div align="center">
-    <a href="https://www.npmjs.com/package/@oyed/embed" target="_blank">
-        <img src="https://img.shields.io/npm/v/@oyed/embed?style=flat-square" alt="NPM" />
+    <a href="https://www.npmjs.com/package/@evilkiwi/embed" target="_blank">
+        <img src="https://img.shields.io/npm/v/@evilkiwi/embed?style=flat-square" alt="NPM" />
     </a>
     <a href="https://discord.gg/3S6AKZ2GR9" target="_blank">
         <img src="https://img.shields.io/discord/1000565079789535324?color=7289DA&label=discord&logo=discord&logoColor=FFFFFF&style=flat-square" alt="Discord" />
     </a>
-    <img src="https://img.shields.io/npm/l/@oyed/embed?style=flat-square" alt="GPL-3.0-only" />
+    <img src="https://img.shields.io/npm/l/@evilkiwi/embed?style=flat-square" alt="GPL-3.0-only" />
     <h3>Embedded iFrame IPC for Vue 3</h3>
 </div>
 
-`@oyed/embed` provides a single Vue 3 hook which can be used to communicate between an iFrame and its parent via `postMessage` IPC.
+`@evilkiwi/embed` provides a single Vue 3 hook which can be used to communicate between an iFrame and its parent via `postMessage` IPC.
 
 - `sync`/`async` messaging/responses
 - Configurable timeouts
@@ -26,11 +26,11 @@
 This package is available via NPM:
 
 ```bash
-yarn add @oyed/embed
+yarn add @evilkiwi/embed
 
 # or
 
-npm install @oyed/embed
+npm install @evilkiwi/embed
 ```
 
 ## Usage
@@ -50,7 +50,7 @@ For this example, we'll assume the `host` is a webpage (`example.com`) and the `
 </template>
 
 <script lang="ts" setup>
-    import { useEmbed } from '@oyed/embed';
+    import { useEmbed } from '@evilkiwi/embed';
     import { ref, onMounted } from 'vue';
 
     const iframe = ref<InstanceType<typeof HTMLIFrame>>();
@@ -82,7 +82,7 @@ For this example, we'll assume the `host` is a webpage (`example.com`) and the `
 </template>
 
 <script lang="ts" setup>
-    import { useEmbed } from '@oyed/embed';
+    import { useEmbed } from '@evilkiwi/embed';
 
     const { handle, post } = useEmbed('client', {
         id: 'shared-id',

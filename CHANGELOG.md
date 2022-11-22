@@ -1,3 +1,8 @@
+# 1.1.1 (2022-11-22)
+
+- Move back to Evil Kiwi (`@evilkiwi/embed`)
+- Update dependencies
+
 # 1.1.0 (2022-11-15)
 
 - Updated dependencies

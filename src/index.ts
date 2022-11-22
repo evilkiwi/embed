@@ -1,6 +1,6 @@
 import type { DefaultEvents } from 'nanoevents';
+import { createLogger } from '@evilkiwi/logger';
 import { createNanoEvents } from 'nanoevents';
-import { createLogger } from '@oyed/logger';
 import type { WatchStopHandle } from 'vue';
 import type { AsyncHandler, DefaultEventsMap, Options, PostObject, Mode, Promises, Context, Type } from '@/types';
 import { encodeErr, decodeErr, isErr } from '@/errors';

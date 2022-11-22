@@ -1,5 +1,5 @@
 import type { Emitter, EventsMap } from 'nanoevents';
-import type { Logger } from '@oyed/logger';
+import type { Logger } from '@evilkiwi/logger';
 import type { Ref } from 'vue';
 
 export type Frame = Ref<InstanceType<typeof HTMLIFrameElement>|undefined>;
