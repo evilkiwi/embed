@@ -1,4 +1,4 @@
-const errPrefix = '_chEmbedError:';
+const errPrefix = '_ekEmbedError:';
 
 export const encodeErr = (e: Error) => `${errPrefix}${e.message}`;
 export const decodeErr = (str: string) => new Error(str.replace(errPrefix, ''));

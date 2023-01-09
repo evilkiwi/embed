@@ -1,3 +1,7 @@
+# 1.1.2 (2023-01-09)
+
+- Added cjs output
+
 # 1.1.1 (2022-11-22)
 
 - Move back to Evil Kiwi (`@evilkiwi/embed`)

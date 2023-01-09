@@ -1,49 +1,51 @@
 {
-    "name": "@evilkiwi/embed",
-    "version": "1.1.1",
-    "description": "Vue 3 Utility Hook for cross-origin iFrame IPC",
-    "files": ["build"],
-    "module": "./build/index.mjs",
-    "types": "./build/index.d.ts",
-    "license": "GPL-3.0-only",
-    "author": {
-        "name": "Evil Kiwi Limited",
-        "url": "https://evil.kiwi",
-        "email": "support@evil.kiwi"
-    },
-    "homepage": "https://github.com/evilkiwi/embed",
-    "bugs": {
-        "url": "https://github.com/evilkiwi/embed/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/evilkiwi/embed.git"
-    },
-    "keywords": [
-        "typescript",
-        "vue",
-        "iframe",
-        "hook"
-    ],
-    "scripts": {
-        "clean": "rimraf build",
-        "prepack": "pnpm run build",
-        "build": "pnpm run clean && pnpm run compile",
-        "compile": "vite build",
-        "dev": "vite build --watch"
-    },
-    "dependencies": {
-        "@evilkiwi/logger": "^1.0.7",
-        "nanoevents": "^7.0.1"
-    },
-    "devDependencies": {
-        "@vitejs/plugin-vue": "^3.2.0",
-        "@vue/compiler-sfc": "^3.2.45",
-        "rimraf": "^3.0.2",
-        "tslib": "^2.4.1",
-        "typescript": "^4.9.3",
-        "vite": "^3.2.4",
-        "vite-plugin-dts": "^1.7.1",
-        "vue": "^3.2.45"
-    }
+  "name": "@evilkiwi/embed",
+  "version": "1.1.2",
+  "description": "Vue 3 Utility Hook for cross-origin iFrame IPC",
+  "files": ["build"],
+  "main": "./build/index.js",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.ts",
+  "license": "GPL-3.0-only",
+  "author": {
+    "name": "Evil Kiwi Limited",
+    "url": "https://evil.kiwi",
+    "email": "support@evil.kiwi"
+  },
+  "homepage": "https://github.com/evilkiwi/embed",
+  "bugs": {
+    "url": "https://github.com/evilkiwi/embed/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evilkiwi/embed.git"
+  },
+  "keywords": [
+    "typescript",
+    "vue",
+    "iframe",
+    "hook"
+  ],
+  "scripts": {
+    "clean": "rimraf build",
+    "prepack": "pnpm run build",
+    "build": "pnpm run clean && pnpm run compile",
+    "compile": "vite build",
+    "dev": "vite build --watch"
+  },
+  "dependencies": {
+    "@evilkiwi/logger": "^1.1.0",
+    "nanoevents": "^7.0.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vue/compiler-sfc": "^3.2.45",
+    "rimraf": "^3.0.2",
+    "terser": "^5.16.1",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.4",
+    "vite-plugin-dts": "^1.7.1",
+    "vue": "^3.2.45"
+  }
 }

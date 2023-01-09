@@ -1,12 +1,12 @@
 <div align="center">
-    <a href="https://www.npmjs.com/package/@evilkiwi/embed" target="_blank">
-        <img src="https://img.shields.io/npm/v/@evilkiwi/embed?style=flat-square" alt="NPM" />
-    </a>
-    <a href="https://discord.gg/3S6AKZ2GR9" target="_blank">
-        <img src="https://img.shields.io/discord/1000565079789535324?color=7289DA&label=discord&logo=discord&logoColor=FFFFFF&style=flat-square" alt="Discord" />
-    </a>
-    <img src="https://img.shields.io/npm/l/@evilkiwi/embed?style=flat-square" alt="GPL-3.0-only" />
-    <h3>Embedded iFrame IPC for Vue 3</h3>
+  <a href="https://www.npmjs.com/package/@evilkiwi/embed" target="_blank">
+    <img src="https://img.shields.io/npm/v/@evilkiwi/embed?style=flat-square" alt="NPM" />
+  </a>
+  <a href="https://discord.gg/3S6AKZ2GR9" target="_blank">
+    <img src="https://img.shields.io/discord/1000565079789535324?color=7289DA&label=discord&logo=discord&logoColor=FFFFFF&style=flat-square" alt="Discord" />
+  </a>
+  <img src="https://img.shields.io/npm/l/@evilkiwi/embed?style=flat-square" alt="GPL-3.0-only" />
+  <h3>Embedded iFrame IPC for Vue 3</h3>
 </div>
 
 `@evilkiwi/embed` provides a single Vue 3 hook which can be used to communicate between an iFrame and its parent via `postMessage` IPC.
@@ -42,66 +42,66 @@ For this example, we'll assume the `host` is a webpage (`example.com`) and the `
  * Host
  */
 <template>
-    <iframe
-        src="https://frame.example.com"
-        ref="iframe"
-        sandbox="allow-scripts"
-    />
+  <iframe
+    src="https://frame.example.com"
+    ref="iframe"
+    sandbox="allow-scripts"
+  />
 </template>
 
 <script lang="ts" setup>
-    import { useEmbed } from '@evilkiwi/embed';
-    import { ref, onMounted } from 'vue';
+  import { useEmbed } from '@evilkiwi/embed';
+  import { ref, onMounted } from 'vue';
 
-    const iframe = ref<InstanceType<typeof HTMLIFrame>>();
+  const iframe = ref<InstanceType<typeof HTMLIFrame>>();
 
-    const { send, events } = useEmbed('host', {
-        id: 'shared-id',
-        iframe,
-        remote: 'https://frame.example.com',
+  const { send, events } = useEmbed('host', {
+    id: 'shared-id',
+    iframe,
+    remote: 'https://frame.example.com',
+  });
+
+  // Listen for any synchronous events being emitted over IPC
+  events.on('yay', payload => {
+    console.log(payload);
+  });
+
+  onMounted(async () => {
+    // Send an event to the iFrame and wait for a response.
+    const response = await send('hello-world', {
+      hello: 'world',
     });
-
-    // Listen for any synchronous events being emitted over IPC
-    events.on('yay', payload => {
-        console.log(payload);
-    });
-
-    onMounted(async () => {
-        // Send an event to the iFrame and wait for a response.
-        const response = await send('hello-world', {
-            hello: 'world',
-        });
-    });
+  });
 </script>
 
 /**
  * Client
  */
 <template>
-    <button @click.prevent="submit">Click me!</button>
+  <button @click.prevent="submit">Click me!</button>
 </template>
 
 <script lang="ts" setup>
-    import { useEmbed } from '@evilkiwi/embed';
+  import { useEmbed } from '@evilkiwi/embed';
 
-    const { handle, post } = useEmbed('client', {
-        id: 'shared-id',
-        remote: 'https://example.com',
-    });
+  const { handle, post } = useEmbed('client', {
+    id: 'shared-id',
+    remote: 'https://example.com',
+  });
 
-    // Resolves incoming (a)synchronous operations.
-    handle('hello-world', async (payload) => {
-        if (payload.hello === 'world') {
-            return 'hey';
-        }
+  // Resolves incoming (a)synchronous operations.
+  handle('hello-world', async (payload) => {
+    if (payload.hello === 'world') {
+      return 'hey';
+    }
 
-        return 'go away';
-    });
+    return 'go away';
+  });
 
-    const submit = () => {
-        // Send a synchronous event to the host
-        post('yay', { test: 123 });
-    };
+  const submit = () => {
+    // Send a synchronous event to the host
+    post('yay', { test: 123 });
+  };
 </script>
 ```
 
