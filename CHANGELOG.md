@@ -1,3 +1,7 @@
+# 1.2.0 (2023-07-24)
+
+- Updated dependencies
+
 # 1.1.2 (2023-01-09)
 
 - Added cjs output
