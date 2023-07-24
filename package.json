@@ -1,6 +1,6 @@
 {
   "name": "@evilkiwi/embed",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Vue 3 Utility Hook for cross-origin iFrame IPC",
   "files": ["build"],
   "main": "./build/index.js",

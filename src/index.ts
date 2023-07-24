@@ -11,6 +11,10 @@ const handlers: Record<string, Record<string, AsyncHandler>> = {};
 const promises: Promises = {};
 
 const processMessage = async (e: MessageEvent<PostObject>) => {
+  if (localStorage.getItem('debug_ipc') === 'true') {
+    console.log('raw postmessage', e);
+  }
+
   if (
     !e.data ||
     !e.data.id ||
