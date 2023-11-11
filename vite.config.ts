@@ -1,5 +1,5 @@
+import { join, resolve } from 'node:path';
 import vue from '@vitejs/plugin-vue';
-import { join, resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
@@ -14,9 +14,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    alias: [
-      { find: /^@\/(.*)/, replacement: `${resolve(__dirname, 'src')}/$1` },
-    ],
+    alias: [{ find: /^@\/(.*)/, replacement: `${resolve(__dirname, 'src')}/$1` }],
   },
   json: {
     namedExports: false,

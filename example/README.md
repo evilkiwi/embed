@@ -1,6 +1,7 @@
 # Embed Example
 
-The directories `parent` and `client` contain a full-featured example of using the App as an ES Module via Vite with TypeScript and Vue 3 `script setup` support.
+The directories `parent` and `client` contain a full-featured example of using the App as an ES Module via Vite with TypeScript and Vue 3
+`script setup` support.
 
 ## Installing
 

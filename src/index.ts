@@ -1,10 +1,10 @@
-import type { DefaultEvents } from 'nanoevents';
 import { createLogger } from '@evilkiwi/logger';
-import { createNanoEvents } from 'nanoevents';
+import { createNanoEvents, type DefaultEvents } from 'nanoevents';
 import type { WatchStopHandle } from 'vue';
-import type { AsyncHandler, DefaultEventsMap, Options, PostObject, Mode, Promises, Context, Type } from '@/types';
-import { encodeErr, decodeErr, isErr } from '@/errors';
+
+import { decodeErr, encodeErr, isErr } from '@/errors';
 import { generateId } from '@/helpers';
+import type { AsyncHandler, Context, DefaultEventsMap, Mode, Options, PostObject, Promises, Type } from '@/types';
 
 const register: Record<string, Context<DefaultEvents & DefaultEventsMap>> = {};
 const handlers: Record<string, Record<string, AsyncHandler>> = {};
@@ -19,24 +19,15 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
     !e.data ||
     !e.data.id ||
     !register[e.data.id] ||
-
     /**
      * Check the origin, if one was supplied.
      * Sandboxed iFrames without the `allow-same-origin` permission
      * will return `"null"` as an origin, so in that case we cannot
      * enforce it.
      */
-    (
-      (register[e.data.id].remote ?? '*') !== '*' &&
-      e.origin !== 'null' &&
-      !e.origin.startsWith(register[e.data.id].remote as string)
-    ) ||
-
+    ((register[e.data.id].remote ?? '*') !== '*' && e.origin !== 'null' && !e.origin.startsWith(register[e.data.id].remote as string)) ||
     // If this is the Host, ensure the source is the iFrame Element.
-    (
-      register[e.data.id].mode === 'host' &&
-      e.source !== register[e.data.id].iframe?.value?.contentWindow
-    )
+    (register[e.data.id].mode === 'host' && e.source !== register[e.data.id].iframe?.value?.contentWindow)
   ) {
     return;
   }
@@ -46,7 +37,7 @@ const processMessage = async (e: MessageEvent<PostObject>) => {
 
   if (type === '_async') {
     // Process incoming async executions.
-    let response: Error|unknown;
+    let response: Error | unknown;
 
     try {
       if (!handlers[id] || !handlers[id][payload.type]) {
@@ -101,8 +92,8 @@ export function useEmbed<Events extends DefaultEventsMap>(mode: Mode, options: O
   const logger = createLogger({ name: `embed/${mode}` });
   const events = createNanoEvents<Events>();
   const isHost = mode === 'host';
-  let target: Window|null = window.parent;
-  let watcher: WatchStopHandle|undefined;
+  let target: Window | null = window.parent;
+  let watcher: WatchStopHandle | undefined;
 
   if (options.debug !== true) {
     logger.setDisabled(true);
@@ -138,11 +129,14 @@ export function useEmbed<Events extends DefaultEventsMap>(mode: Mode, options: O
 
     logger.debug(`sending synchronous event \`${type}\` to \`${remote}\``, message);
 
-    target.postMessage({
-      id: options.id,
-      type,
-      payload: message ?? {},
-    }, remote);
+    target.postMessage(
+      {
+        id: options.id,
+        type,
+        payload: message ?? {},
+      },
+      remote,
+    );
   };
 
   const send = async <R = any>(type: Type, message?: any): Promise<R> => {

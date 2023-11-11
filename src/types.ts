@@ -1,10 +1,10 @@
-import type { Emitter, EventsMap } from 'nanoevents';
 import type { Logger } from '@evilkiwi/logger';
+import type { Emitter, EventsMap } from 'nanoevents';
 import type { Ref } from 'vue';
 
-export type Frame = Ref<InstanceType<typeof HTMLIFrameElement>|undefined>;
+export type Frame = Ref<InstanceType<typeof HTMLIFrameElement> | undefined>;
 export type Type = string;
-export type Mode = 'host'|'client';
+export type Mode = 'host' | 'client';
 
 export type AsyncHandler<P = any> = (payload: P) => Promise<unknown>;
 
